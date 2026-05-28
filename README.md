@@ -1,6 +1,15 @@
 # HOUO Attend
 
-法桜交流会（ほうおうこうりゅうかい）向けの出欠管理Webアプリです。
+**法桜交流会（ほうおうこうりゅうかい）専用のイベント出欠管理Webアプリ**
+
+🔗 **[https://houo-attend.vercel.app](https://houo-attend.vercel.app)**
+
+---
+
+## 制作背景
+
+所属する学生団体では、イベントの出欠確認をLINEのテキストで行っており、参加人数の把握に手間がかかっていました。  
+「10秒で出欠を登録できる」をコンセプトに、団体専用のシンプルな出欠管理アプリをフルスタックで自作しました。
 
 ## 機能
 
@@ -18,9 +27,10 @@
 |---------|------|
 | フロントエンド | Next.js 14 (App Router) |
 | バックエンド | FastAPI + SQLAlchemy 2.0 |
-| データベース | PostgreSQL |
+| データベース | PostgreSQL (Neon) |
 | 認証 | JWT (python-jose) |
-| インフラ（本番） | Vercel / Render / Neon |
+| インフラ | Vercel / Render / Neon |
+| 開発環境 | Docker Compose |
 
 ## ローカル開発
 
@@ -34,11 +44,9 @@
 git clone https://github.com/Taiyo-Tanabe/HOUO-Attend-Code.git
 cd HOUO-Attend-Code
 
-# 環境変数ファイルを作成
 cp .env.example .env
 # .env を編集してコードや秘密鍵を設定
 
-# 起動
 docker compose up --build
 ```
 
@@ -63,27 +71,19 @@ docker compose up --build
 
 ## 本番デプロイ
 
-### 構成
-
 ```
 Vercel (Next.js)  →  Render (FastAPI)  →  Neon (PostgreSQL)
 ```
 
-### 手順
+**1. Neon** — プロジェクト作成後、接続文字列（`postgresql://...?sslmode=require`）を控える
 
-**1. Neon**
-- [neon.tech](https://neon.tech) でプロジェクト作成
-- 接続文字列（`postgresql://...?sslmode=require`）を控える
-
-**2. Render**
-- New → Web Service → このリポジトリを接続
+**2. Render** — Web Service としてこのリポジトリを接続
 - Root Directory: `backend`
 - Build Command: `pip install -r requirements.txt`
 - Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-- 環境変数を設定（`DATABASE_URL`, `JWT_SECRET`, `MEMBER_CODE`, `ADMIN_CODE`, `CORS_ORIGINS`）
+- 環境変数: `DATABASE_URL` `JWT_SECRET` `MEMBER_CODE` `ADMIN_CODE` `CORS_ORIGINS`
 
-**3. Vercel**
-- このリポジトリを接続
+**3. Vercel** — このリポジトリを接続
 - Root Directory: `frontend`
 - 環境変数: `NEXT_PUBLIC_API_URL` にRenderのURLを設定
 
