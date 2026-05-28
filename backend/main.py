@@ -24,13 +24,10 @@ seed_settings()
 
 app = FastAPI(title="法桜交流会 イベント管理API")
 
-origins = os.getenv("CORS_ORIGINS", "http://localhost:3001").split(",")
-wildcard = origins == ["*"]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=not wildcard,
+    allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
