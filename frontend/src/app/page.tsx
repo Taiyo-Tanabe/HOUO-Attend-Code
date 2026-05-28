@@ -49,7 +49,7 @@ export default function HomePage() {
             <span style={{ fontSize: "1.6rem", fontWeight: 800, color: "var(--text)", letterSpacing: "-0.01em" }}>HOUO Attend</span>
           </div>
           <p style={{ color: "var(--text-dim)", fontSize: "0.88rem", marginBottom: "0.25rem" }}>法桜交流会のイベント管理アプリへようこそ。</p>
-          <p style={{ color: "var(--muted)", fontSize: "0.78rem" }}>団体コードを変更したい場合は管理者コードでログインしてください。</p>
+          <p style={{ color: "var(--muted)", fontSize: "0.78rem" }}>コードを変更したい場合は管理者コードでログインしてください。</p>
         </div>
 
         <form onSubmit={handleLogin} style={{ width: "100%", maxWidth: "320px", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
