@@ -5,17 +5,11 @@ import { registerAttendance, Attendance } from "@/lib/api"
 
 type Status = Attendance["status"]
 
-const OPTIONS: { value: Status; label: string; glow: string }[] = [
-  { value: "attending",     label: "参加",   glow: "rgba(0,230,118,0.35)" },
-  { value: "not_attending", label: "不参加", glow: "rgba(0,80,160,0.4)" },
-  { value: "undecided",     label: "未定",   glow: "rgba(255,214,0,0.3)" },
+const OPTIONS: { value: Status; label: string }[] = [
+  { value: "attending",     label: "参加" },
+  { value: "not_attending", label: "不参加" },
+  { value: "undecided",     label: "未定" },
 ]
-
-const ACTIVE_BG: Record<Status, string> = {
-  attending:     "linear-gradient(135deg, #00e676, #00b4d8)",
-  not_attending: "var(--card-hover)",
-  undecided:     "rgba(255,214,0,0.15)",
-}
 
 interface Props {
   eventId: string
@@ -46,13 +40,9 @@ export default function AttendanceForm({ eventId, onSubmitted }: Props) {
 
   if (done) {
     return (
-      <div style={{
-        background: "var(--card)", border: "1px solid rgba(0,230,118,0.25)",
-        borderRadius: "16px", padding: "1.5rem", textAlign: "center",
-        boxShadow: "0 0 20px rgba(0,230,118,0.08)",
-      }}>
-        <p style={{ fontWeight: 700, color: "var(--primary)", fontSize: "1.05rem", textShadow: "0 0 8px rgba(0,230,118,0.4)" }}>登録しました！</p>
-        <button onClick={() => setDone(false)} style={{ marginTop: "0.5rem", fontSize: "0.8rem", color: "var(--muted)", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>
+      <div style={{ background: "var(--card)", border: "1px solid var(--border-hi)", borderRadius: "10px", padding: "1.25rem", textAlign: "center" }}>
+        <p style={{ fontWeight: 600, color: "var(--primary)", fontSize: "0.95rem" }}>✓ 登録しました</p>
+        <button onClick={() => setDone(false)} style={{ marginTop: "0.4rem", fontSize: "0.78rem", color: "var(--muted)", background: "none", border: "none", cursor: "pointer" }}>
           もう一度登録する
         </button>
       </div>
@@ -60,30 +50,24 @@ export default function AttendanceForm({ eventId, onSubmitted }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{
-      background: "var(--card)", border: "1px solid var(--border)",
-      borderRadius: "16px", padding: "1.25rem",
-      display: "flex", flexDirection: "column", gap: "0.85rem",
-      boxShadow: "0 2px 20px rgba(0,0,0,0.4)",
-    }}>
-      <p style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text)" }}>出欠を登録する</p>
+    <form onSubmit={handleSubmit} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "10px", padding: "1.1rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+      <p style={{ fontWeight: 600, fontSize: "0.85rem", color: "var(--text-dim)", letterSpacing: "0.03em" }}>出欠を登録する</p>
 
-      <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="名前を入力" maxLength={50} />
+      <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="名前" maxLength={50} />
 
-      <div style={{ display: "flex", gap: "0.5rem" }}>
+      <div style={{ display: "flex", gap: "0.4rem" }}>
         {OPTIONS.map((opt) => (
           <button
             key={opt.value}
             type="button"
             onClick={() => setStatus(opt.value)}
             style={{
-              flex: 1, borderRadius: "9999px", padding: "0.65rem",
-              fontWeight: 700, fontSize: "0.85rem",
-              border: status === opt.value ? "1px solid transparent" : "1px solid var(--border)",
+              flex: 1, borderRadius: "6px", padding: "0.55rem",
+              fontWeight: 600, fontSize: "0.82rem",
+              border: status === opt.value ? "1px solid var(--primary)" : "1px solid var(--border)",
               cursor: "pointer", transition: "all 0.15s",
-              background: status === opt.value ? ACTIVE_BG[opt.value] : "var(--card-2)",
-              color: "var(--text)",
-              boxShadow: status === opt.value ? `0 0 12px ${opt.glow}` : "none",
+              background: status === opt.value ? "rgba(0,229,153,0.1)" : "var(--card-2)",
+              color: status === opt.value ? "var(--primary)" : "var(--text-dim)",
             }}
           >
             {opt.label}
@@ -91,19 +75,18 @@ export default function AttendanceForm({ eventId, onSubmitted }: Props) {
         ))}
       </div>
 
-      <textarea value={memo} onChange={(e) => setMemo(e.target.value)} placeholder="備考（任意）" rows={2} maxLength={200} style={{ fontSize: "0.88rem" }} />
+      <textarea value={memo} onChange={(e) => setMemo(e.target.value)} placeholder="備考（任意）" rows={2} maxLength={200} style={{ fontSize: "0.85rem" }} />
 
       <button
         type="submit"
         disabled={submitting || !name.trim()}
         style={{
-          background: submitting || !name.trim() ? "var(--card-2)" : "linear-gradient(135deg, #00e676, #00b4d8)",
-          color: "#fff", border: "none", borderRadius: "9999px",
-          padding: "0.8rem", fontWeight: 700, fontSize: "0.95rem",
+          background: submitting || !name.trim() ? "var(--card-2)" : "var(--primary)",
+          color: submitting || !name.trim() ? "var(--muted)" : "#000",
+          border: "none", borderRadius: "8px",
+          padding: "0.7rem", fontWeight: 700, fontSize: "0.88rem",
           cursor: submitting || !name.trim() ? "not-allowed" : "pointer",
-          opacity: submitting || !name.trim() ? 0.45 : 1,
-          transition: "all 0.2s",
-          boxShadow: submitting || !name.trim() ? "none" : "0 0 16px rgba(0,230,118,0.28)",
+          transition: "all 0.15s",
         }}
       >
         {submitting ? "登録中…" : "登録する"}

@@ -7,12 +7,6 @@ import { getEvent, deleteEvent, EventDetail } from "@/lib/api"
 import AttendanceForm from "@/components/AttendanceForm"
 import AttendanceList from "@/components/AttendanceList"
 
-const btnBase: React.CSSProperties = {
-  flex: 1, border: "1px solid var(--border)", background: "none",
-  color: "var(--text-dim)", borderRadius: "12px", padding: "0.6rem",
-  fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", transition: "all 0.15s",
-}
-
 export default function EventPage() {
   const { id } = useParams<{ id: string }>()
   const router = useRouter()
@@ -45,59 +39,64 @@ export default function EventPage() {
     })
   }
 
-  function handleAttendanceDeleted(id: string) {
+  function handleAttendanceDeleted(deletedId: string) {
     setEvent((prev) => {
       if (!prev) return prev
-      const attendances = prev.attendances.filter(a => a.id !== id)
+      const attendances = prev.attendances.filter(a => a.id !== deletedId)
       return { ...prev, attendances, attending_count: attendances.filter(a => a.status === "attending").length }
     })
   }
 
-  if (loading) return <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0" }}>読み込み中…</p>
-  if (!event) return <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0" }}>イベントが見つかりません</p>
+  if (loading) return <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0", fontSize: "0.85rem" }}>読み込み中…</p>
+  if (!event) return <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0", fontSize: "0.85rem" }}>イベントが見つかりません</p>
 
   const lineText = encodeURIComponent(`【HOUO Attend】\n${event.title}\n${event.date_display}\n${typeof window !== "undefined" ? window.location.href : ""}`)
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-      <Link href="/" style={{ fontSize: "0.82rem", color: "var(--primary)", textDecoration: "none" }}>← 一覧に戻る</Link>
+    <div style={{ display: "flex", flexDirection: "column", gap: "0.85rem" }}>
+      <Link href="/" style={{ fontSize: "0.78rem", color: "var(--muted)", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: "0.3rem" }}>
+        ← 一覧に戻る
+      </Link>
 
-      <div style={{
-        background: "var(--card)", border: "1px solid var(--border)",
-        borderRadius: "16px", padding: "1.25rem 1.5rem",
-        boxShadow: "0 2px 20px rgba(0,0,0,0.4)",
-      }}>
-        <p style={{ fontSize: "0.73rem", color: "var(--muted)", marginBottom: "0.3rem", letterSpacing: "0.04em" }}>{event.date_display}</p>
-        <h1 style={{ fontSize: "1.3rem", fontWeight: 800, color: "var(--text)", marginBottom: "0.5rem" }}>{event.title}</h1>
-        {event.location && <p style={{ fontSize: "0.85rem", color: "var(--text-dim)", marginBottom: "0.5rem" }}>📍 {event.location}</p>}
-        {event.description && <p style={{ fontSize: "0.9rem", color: "var(--text-dim)", whiteSpace: "pre-wrap", marginBottom: "0.75rem" }}>{event.description}</p>}
-        <p style={{ fontSize: "0.85rem", color: "var(--muted)" }}>
-          参加予定{" "}
-          <span style={{ fontSize: "1.8rem", fontWeight: 800, color: "var(--primary)", textShadow: "0 0 12px rgba(0,230,118,0.5)" }}>{event.attending_count}</span>
-          {" "}人
-        </p>
+      {/* イベント情報 */}
+      <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "10px", padding: "1.1rem 1.25rem" }}>
+        <p style={{ fontSize: "0.72rem", color: "var(--muted)", marginBottom: "0.3rem" }}>{event.date_display}</p>
+        <h1 style={{ fontSize: "1.2rem", fontWeight: 700, color: "var(--text)", marginBottom: "0.4rem", lineHeight: 1.4 }}>{event.title}</h1>
+        {event.location && <p style={{ fontSize: "0.82rem", color: "var(--text-dim)", marginBottom: "0.4rem" }}>📍 {event.location}</p>}
+        {event.description && <p style={{ fontSize: "0.85rem", color: "var(--text-dim)", whiteSpace: "pre-wrap", marginBottom: "0.75rem", lineHeight: 1.6 }}>{event.description}</p>}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", paddingTop: "0.5rem", borderTop: "1px solid var(--border)" }}>
+          <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--primary)" }} />
+          <span style={{ fontSize: "0.82rem", color: "var(--text-dim)" }}>
+            参加予定 <span style={{ color: "var(--primary)", fontWeight: 700, fontSize: "1.1rem" }}>{event.attending_count}</span> 人
+          </span>
+        </div>
       </div>
 
-      <a
-        href={`https://line.me/R/msg/text/?${lineText}`}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
-          display: "flex", alignItems: "center", justifyContent: "center",
-          gap: "0.5rem", background: "#06C755", color: "#fff",
-          borderRadius: "9999px", padding: "0.8rem", fontWeight: 700,
-          fontSize: "0.95rem", textDecoration: "none",
-          boxShadow: "0 0 16px rgba(0,230,118,0.2)",
-        }}
-      >
-        LINEで共有する
-      </a>
-
+      {/* アクション */}
       <div style={{ display: "flex", gap: "0.5rem" }}>
-        <Link href={`/events/${id}/edit`} style={{ ...btnBase, textAlign: "center", textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
+        <a
+          href={`https://line.me/R/msg/text/?${lineText}`}
+          target="_blank" rel="noopener noreferrer"
+          style={{
+            flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
+            background: "#06C755", color: "#fff", borderRadius: "8px",
+            padding: "0.6rem", fontWeight: 600, fontSize: "0.82rem", textDecoration: "none",
+          }}
+        >
+          LINEで共有
+        </a>
+        <Link href={`/events/${id}/edit`} style={{
+          flex: 1, display: "flex", alignItems: "center", justifyContent: "center",
+          border: "1px solid var(--border)", background: "none", color: "var(--text-dim)",
+          borderRadius: "8px", padding: "0.6rem", fontSize: "0.82rem", fontWeight: 600, textDecoration: "none",
+        }}>
           編集
         </Link>
-        <button onClick={handleDelete} style={{ ...btnBase, color: "var(--danger)", borderColor: "rgba(255,77,106,0.25)" }}>
+        <button onClick={handleDelete} style={{
+          flex: 1, border: "1px solid rgba(239,68,68,0.2)", background: "none",
+          color: "var(--danger)", borderRadius: "8px", padding: "0.6rem",
+          fontSize: "0.82rem", fontWeight: 600, cursor: "pointer",
+        }}>
           削除
         </button>
       </div>

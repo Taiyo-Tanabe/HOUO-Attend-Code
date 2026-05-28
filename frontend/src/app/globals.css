@@ -3,49 +3,49 @@
 @tailwind utilities;
 
 :root {
-  --bg:         #020c1b;
-  --card:       #071628;
-  --card-2:     #0c1e35;
-  --card-hover: #112540;
-  --border:     rgba(0, 210, 110, 0.15);
-  --text:       #dff2eb;
-  --text-dim:   #7eb89a;
-  --muted:      #3a6050;
-  --primary:    #00e676;
-  --brand:      #00b4d8;
-  --danger:     #ff4d6a;
-  --success:    #00e676;
-  --warning:    #ffd600;
+  --bg:         #0a0a0a;
+  --card:       #171717;
+  --card-2:     #1f1f1f;
+  --card-hover: #262626;
+  --border:     rgba(255,255,255,0.08);
+  --border-hi:  rgba(0,229,153,0.35);
+  --text:       #fafafa;
+  --text-dim:   #a1a1aa;
+  --muted:      #52525b;
+  --primary:    #00e599;
+  --brand:      #00e599;
+  --danger:     #ef4444;
+  --success:    #00e599;
+  --warning:    #f59e0b;
 }
 
-* { box-sizing: border-box; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   background-color: var(--bg);
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -10%, rgba(0, 80, 40, 0.25), transparent),
-    radial-gradient(ellipse 60% 40% at 80% 90%, rgba(0, 60, 120, 0.2), transparent);
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans JP', Roboto, sans-serif;
-  font-size: 15px;
+  font-size: 14px;
   line-height: 1.6;
   min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
 }
 
 input, textarea, select {
   background-color: var(--card-2);
   color: var(--text);
   border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  padding: 0.65rem 0.9rem;
   width: 100%;
   outline: none;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  font-size: 14px;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 input:focus, textarea:focus {
   border-color: var(--primary);
-  box-shadow: 0 0 0 2px rgba(0, 230, 118, 0.2), 0 0 12px rgba(0, 230, 118, 0.1);
+  box-shadow: 0 0 0 1px rgba(0,229,153,0.2);
 }
 
 input::placeholder, textarea::placeholder {
@@ -54,6 +54,6 @@ input::placeholder, textarea::placeholder {
 
 textarea { resize: none; }
 
-::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: rgba(0, 210, 110, 0.3); border-radius: 999px; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 999px; }

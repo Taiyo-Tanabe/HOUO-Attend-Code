@@ -7,35 +7,33 @@ export default function EventCard({ event }: { event: Event }) {
       <div style={{
         background: "var(--card)",
         border: "1px solid var(--border)",
-        borderRadius: "16px",
-        padding: "1rem 1.25rem",
+        borderRadius: "10px",
+        padding: "1rem 1.1rem",
         cursor: "pointer",
-        transition: "border-color 0.2s, box-shadow 0.2s, transform 0.15s",
-        boxShadow: "0 2px 20px rgba(0,0,0,0.5)",
+        transition: "border-color 0.15s, background 0.15s",
       }}
         onMouseEnter={e => {
           const el = e.currentTarget as HTMLElement
-          el.style.borderColor = "rgba(0,230,118,0.4)"
-          el.style.boxShadow = "0 0 20px rgba(0,230,118,0.12), 0 4px 24px rgba(0,0,0,0.5)"
-          el.style.transform = "translateY(-2px)"
+          el.style.borderColor = "rgba(0,229,153,0.3)"
+          el.style.background = "var(--card-hover)"
         }}
         onMouseLeave={e => {
           const el = e.currentTarget as HTMLElement
-          el.style.borderColor = "rgba(0,210,110,0.15)"
-          el.style.boxShadow = "0 2px 20px rgba(0,0,0,0.5)"
-          el.style.transform = "translateY(0)"
+          el.style.borderColor = "rgba(255,255,255,0.08)"
+          el.style.background = "var(--card)"
         }}
       >
-        <p style={{ fontSize: "0.73rem", color: "var(--muted)", marginBottom: "0.3rem", letterSpacing: "0.04em" }}>{event.date_display}</p>
-        <p style={{ fontWeight: 700, fontSize: "1rem", color: "var(--text)", marginBottom: "0.3rem", lineHeight: 1.4 }}>{event.title}</p>
+        <p style={{ fontSize: "0.72rem", color: "var(--muted)", marginBottom: "0.25rem" }}>{event.date_display}</p>
+        <p style={{ fontWeight: 600, fontSize: "0.95rem", color: "var(--text)", marginBottom: "0.25rem", lineHeight: 1.4 }}>{event.title}</p>
         {event.location && (
-          <p style={{ fontSize: "0.8rem", color: "var(--text-dim)", marginBottom: "0.5rem" }}>📍 {event.location}</p>
+          <p style={{ fontSize: "0.78rem", color: "var(--text-dim)", marginBottom: "0.4rem" }}>📍 {event.location}</p>
         )}
-        <p style={{ fontSize: "0.82rem", color: "var(--muted)" }}>
-          参加予定{" "}
-          <span style={{ fontSize: "1.3rem", fontWeight: 800, color: "var(--primary)", textShadow: "0 0 8px rgba(0,230,118,0.5)" }}>{event.attending_count}</span>
-          {" "}人
-        </p>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.4rem", marginTop: "0.5rem" }}>
+          <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: "var(--primary)", flexShrink: 0 }} />
+          <span style={{ fontSize: "0.78rem", color: "var(--text-dim)" }}>
+            参加 <span style={{ color: "var(--primary)", fontWeight: 700 }}>{event.attending_count}</span> 人
+          </span>
+        </div>
       </div>
     </Link>
   )

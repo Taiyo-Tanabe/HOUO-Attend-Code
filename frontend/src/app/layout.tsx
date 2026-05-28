@@ -15,19 +15,25 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <header style={{
             position: "sticky", top: 0, zIndex: 200,
-            background: "rgba(2,12,27,0.85)",
-            borderBottom: "1px solid rgba(0,210,110,0.15)",
-            backdropFilter: "blur(20px) saturate(1.4)",
-            padding: "0 1rem",
-            height: "56px",
+            background: "rgba(10,10,10,0.9)",
+            borderBottom: "1px solid var(--border)",
+            backdropFilter: "blur(12px)",
+            padding: "0 1.25rem",
+            height: "52px",
             display: "flex",
             alignItems: "center",
-            justifyContent: "center",
+            justifyContent: "space-between",
           }}>
-            <Link href="/" style={{ textDecoration: "none" }}>
-              <span style={{ fontSize: "1rem", fontWeight: 800, letterSpacing: "0.06em" }}>
-                <span style={{ color: "var(--primary)", textShadow: "0 0 14px rgba(0,230,118,0.7)" }}>HOUO</span>
-                <span style={{ color: "var(--brand)", marginLeft: "0.3rem", textShadow: "0 0 14px rgba(0,180,216,0.7)" }}>Attend</span>
+            <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+              <span style={{
+                width: "22px", height: "22px", borderRadius: "6px",
+                background: "var(--primary)",
+                display: "inline-flex", alignItems: "center", justifyContent: "center",
+                fontSize: "0.7rem", fontWeight: 900, color: "#000",
+                flexShrink: 0,
+              }}>H</span>
+              <span style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--text)", letterSpacing: "0.02em" }}>
+                HOUO <span style={{ color: "var(--text-dim)", fontWeight: 400 }}>Attend</span>
               </span>
             </Link>
           </header>
