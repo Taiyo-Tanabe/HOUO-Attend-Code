@@ -4,6 +4,8 @@
 
 🔗 **[https://houo-attend.vercel.app](https://houo-attend.vercel.app)**
 
+![スクリーンショット](docs/houoattendscreenshot.png)
+
 ---
 
 ## 制作背景
