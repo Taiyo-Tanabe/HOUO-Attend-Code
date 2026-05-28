@@ -37,40 +37,40 @@ export default function HomePage() {
 
   if (!token) {
     return (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "65vh", gap: "2rem" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "68vh", gap: "2.5rem" }}>
         <div style={{ textAlign: "center" }}>
-          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.6rem", marginBottom: "0.5rem" }}>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.7rem", marginBottom: "0.6rem" }}>
             <span style={{
-              width: "36px", height: "36px", borderRadius: "10px",
-              background: "var(--primary)", display: "inline-flex",
-              alignItems: "center", justifyContent: "center",
-              fontSize: "1rem", fontWeight: 900, color: "#000",
+              width: "40px", height: "40px", borderRadius: "12px",
+              background: "var(--primary)",
+              display: "inline-flex", alignItems: "center", justifyContent: "center",
+              fontSize: "1.1rem", fontWeight: 900, color: "#000",
             }}>H</span>
-            <span style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--text)" }}>HOUO Attend</span>
+            <span style={{ fontSize: "1.6rem", fontWeight: 800, color: "var(--text)", letterSpacing: "-0.01em" }}>HOUO Attend</span>
           </div>
-          <p style={{ color: "var(--muted)", fontSize: "0.82rem" }}>団体コードを入力してください</p>
+          <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>団体コードを入力して入場してください</p>
         </div>
 
-        <form onSubmit={handleLogin} style={{ width: "100%", maxWidth: "300px", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+        <form onSubmit={handleLogin} style={{ width: "100%", maxWidth: "320px", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
           <input
             type="text"
             value={code}
             onChange={(e) => setCode(e.target.value)}
             placeholder="コードを入力"
             autoFocus
-            style={{ textAlign: "center", fontSize: "1rem", letterSpacing: "0.12em" }}
+            style={{ textAlign: "center", fontSize: "1rem", letterSpacing: "0.1em", padding: "0.85rem 1rem" }}
           />
-          {error && <p style={{ color: "var(--danger)", fontSize: "0.82rem", textAlign: "center" }}>{error}</p>}
+          {error && <p style={{ color: "var(--danger)", fontSize: "0.85rem", textAlign: "center" }}>{error}</p>}
           <button
             type="submit"
             disabled={submitting || !code.trim()}
             style={{
               background: submitting || !code.trim() ? "var(--card-2)" : "var(--primary)",
               color: submitting || !code.trim() ? "var(--muted)" : "#000",
-              border: "none", borderRadius: "8px",
-              padding: "0.7rem", fontWeight: 700, fontSize: "0.9rem",
+              border: "none", borderRadius: "10px",
+              padding: "0.85rem", fontWeight: 700, fontSize: "0.95rem",
               cursor: submitting || !code.trim() ? "not-allowed" : "pointer",
-              transition: "all 0.15s",
+              transition: "opacity 0.15s",
             }}
           >
             {submitting ? "確認中…" : "入場する"}
@@ -82,31 +82,34 @@ export default function HomePage() {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-        <span style={{ fontWeight: 600, fontSize: "0.82rem", color: "var(--muted)", letterSpacing: "0.04em", textTransform: "uppercase" }}>Events</span>
-        <div style={{ display: "flex", gap: "0.6rem", alignItems: "center" }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.1rem" }}>
+        <span style={{ fontWeight: 600, fontSize: "0.78rem", color: "var(--muted)", letterSpacing: "0.08em", textTransform: "uppercase" }}>イベント一覧</span>
+        <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
           <Link href="/events/new" style={{
             background: "var(--primary)", color: "#000",
-            padding: "0.35rem 0.85rem", borderRadius: "6px",
-            fontSize: "0.8rem", fontWeight: 700, textDecoration: "none",
+            padding: "0.4rem 1rem", borderRadius: "8px",
+            fontSize: "0.82rem", fontWeight: 700, textDecoration: "none",
           }}>
-            + New
+            ＋ 作成
           </Link>
           {role === "admin" && (
-            <Link href="/settings" style={{ fontSize: "0.75rem", color: "var(--muted)", textDecoration: "none" }}>設定</Link>
+            <Link href="/settings" style={{ fontSize: "0.78rem", color: "var(--muted)", textDecoration: "none" }}>設定</Link>
           )}
-          <button onClick={logout} style={{ fontSize: "0.75rem", color: "var(--muted)", background: "none", border: "none", cursor: "pointer" }}>
+          <button onClick={logout} style={{ fontSize: "0.78rem", color: "var(--muted)", background: "none", border: "none", cursor: "pointer" }}>
             退出
           </button>
         </div>
       </div>
 
-      {fetching && <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0", fontSize: "0.85rem" }}>読み込み中…</p>}
+      {fetching && <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0", fontSize: "0.88rem" }}>読み込み中…</p>}
       {!fetching && events.length === 0 && (
-        <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0", fontSize: "0.85rem" }}>イベントはまだありません</p>
+        <div style={{ textAlign: "center", padding: "4rem 0", color: "var(--muted)" }}>
+          <p style={{ fontSize: "1.5rem", marginBottom: "0.5rem" }}>📅</p>
+          <p style={{ fontSize: "0.88rem" }}>イベントはまだありません</p>
+        </div>
       )}
 
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
         {events.map((event) => <EventCard key={event.id} event={event} />)}
       </div>
     </div>

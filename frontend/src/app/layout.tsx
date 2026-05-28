@@ -15,29 +15,28 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <AuthProvider>
           <header style={{
             position: "sticky", top: 0, zIndex: 200,
-            background: "rgba(10,10,10,0.9)",
+            background: "rgba(10,10,10,0.92)",
             borderBottom: "1px solid var(--border)",
-            backdropFilter: "blur(12px)",
+            backdropFilter: "blur(16px)",
             padding: "0 1.25rem",
-            height: "52px",
+            height: "54px",
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-between",
           }}>
-            <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <Link href="/" style={{ textDecoration: "none", display: "flex", alignItems: "center", gap: "0.55rem" }}>
               <span style={{
-                width: "22px", height: "22px", borderRadius: "6px",
+                width: "28px", height: "28px", borderRadius: "8px",
                 background: "var(--primary)",
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
-                fontSize: "0.7rem", fontWeight: 900, color: "#000",
-                flexShrink: 0,
+                fontSize: "0.8rem", fontWeight: 900, color: "#000", flexShrink: 0,
+                letterSpacing: "-0.02em",
               }}>H</span>
-              <span style={{ fontSize: "0.9rem", fontWeight: 700, color: "var(--text)", letterSpacing: "0.02em" }}>
-                HOUO <span style={{ color: "var(--text-dim)", fontWeight: 400 }}>Attend</span>
+              <span style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--text)", letterSpacing: "0.01em" }}>
+                HOUO <span style={{ color: "var(--text-dim)", fontWeight: 500 }}>Attend</span>
               </span>
             </Link>
           </header>
-          <main style={{ maxWidth: "520px", margin: "0 auto", padding: "1.5rem 1rem" }}>
+          <main style={{ maxWidth: "520px", margin: "0 auto", padding: "1.5rem 1rem 4rem" }}>
             {children}
           </main>
         </AuthProvider>
