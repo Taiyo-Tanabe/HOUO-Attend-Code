@@ -27,7 +27,7 @@
 
 | レイヤー | 技術 |
 |---------|------|
-| フロントエンド | Next.js 14 (App Router) |
+| フロントエンド | Next.js 14 (App Router) + JavaScript |
 | バックエンド | FastAPI + SQLAlchemy 2.0 |
 | データベース | PostgreSQL (Neon) |
 | 認証 | JWT (python-jose) |
