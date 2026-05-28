@@ -11,18 +11,18 @@ export default function EventCard({ event }: { event: Event }) {
         padding: "1rem 1.25rem",
         cursor: "pointer",
         transition: "border-color 0.2s, box-shadow 0.2s, transform 0.15s",
-        boxShadow: "0 2px 20px rgba(0,0,0,0.4)",
+        boxShadow: "0 2px 20px rgba(0,0,0,0.5)",
       }}
         onMouseEnter={e => {
           const el = e.currentTarget as HTMLElement
-          el.style.borderColor = "rgba(0,229,255,0.4)"
-          el.style.boxShadow = "0 0 20px rgba(0,229,255,0.12), 0 4px 24px rgba(0,0,0,0.5)"
+          el.style.borderColor = "rgba(0,230,118,0.4)"
+          el.style.boxShadow = "0 0 20px rgba(0,230,118,0.12), 0 4px 24px rgba(0,0,0,0.5)"
           el.style.transform = "translateY(-2px)"
         }}
         onMouseLeave={e => {
           const el = e.currentTarget as HTMLElement
-          el.style.borderColor = "rgba(120,80,255,0.2)"
-          el.style.boxShadow = "0 2px 20px rgba(0,0,0,0.4)"
+          el.style.borderColor = "rgba(0,210,110,0.15)"
+          el.style.boxShadow = "0 2px 20px rgba(0,0,0,0.5)"
           el.style.transform = "translateY(0)"
         }}
       >
@@ -33,7 +33,7 @@ export default function EventCard({ event }: { event: Event }) {
         )}
         <p style={{ fontSize: "0.82rem", color: "var(--muted)" }}>
           参加予定{" "}
-          <span style={{ fontSize: "1.3rem", fontWeight: 800, color: "var(--primary)", textShadow: "0 0 8px rgba(0,229,255,0.5)" }}>{event.attending_count}</span>
+          <span style={{ fontSize: "1.3rem", fontWeight: 800, color: "var(--primary)", textShadow: "0 0 8px rgba(0,230,118,0.5)" }}>{event.attending_count}</span>
           {" "}人
         </p>
       </div>

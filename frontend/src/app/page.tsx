@@ -43,8 +43,8 @@ export default function HomePage() {
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "65vh", gap: "2.5rem" }}>
         <div style={{ textAlign: "center" }}>
           <p style={{ fontSize: "2.2rem", fontWeight: 900, letterSpacing: "0.06em", marginBottom: "0.4rem" }}>
-            <span style={{ color: "var(--brand)", textShadow: "0 0 20px rgba(255,45,120,0.7)" }}>HOUO</span>
-            <span style={{ color: "var(--primary)", textShadow: "0 0 20px rgba(0,229,255,0.7)" }}> Attend</span>
+            <span style={{ color: "var(--brand)", textShadow: "0 0 20px rgba(0,230,118,0.7)" }}>HOUO</span>
+            <span style={{ color: "var(--primary)", textShadow: "0 0 20px rgba(0,180,216,0.7)" }}> Attend</span>
           </p>
           <p style={{ color: "var(--muted)", fontSize: "0.85rem", letterSpacing: "0.02em" }}>団体コードを入力して入場してください</p>
         </div>
@@ -58,14 +58,14 @@ export default function HomePage() {
             autoFocus
             style={{ textAlign: "center", fontSize: "1.1rem", letterSpacing: "0.15em" }}
           />
-          {error && <p style={{ color: "var(--danger)", fontSize: "0.85rem", textAlign: "center", textShadow: "0 0 8px rgba(255,45,85,0.5)" }}>{error}</p>}
+          {error && <p style={{ color: "var(--danger)", fontSize: "0.85rem", textAlign: "center", textShadow: "0 0 8px rgba(255,77,106,0.5)" }}>{error}</p>}
           <button
             type="submit"
             disabled={submitting || !code.trim()}
             style={{
               background: submitting || !code.trim()
                 ? "var(--card-2)"
-                : "linear-gradient(135deg, #00e5ff, #7b2fff)",
+                : "linear-gradient(135deg, #00e676, #00b4d8)",
               color: "#fff",
               border: "none",
               borderRadius: "9999px",
@@ -75,7 +75,7 @@ export default function HomePage() {
               cursor: submitting || !code.trim() ? "not-allowed" : "pointer",
               opacity: submitting || !code.trim() ? 0.45 : 1,
               transition: "all 0.2s",
-              boxShadow: submitting || !code.trim() ? "none" : "0 0 18px rgba(0,229,255,0.3)",
+              boxShadow: submitting || !code.trim() ? "none" : "0 0 18px rgba(0,230,118,0.3)",
             }}
           >
             {submitting ? "確認中…" : "入場する"}
@@ -91,7 +91,7 @@ export default function HomePage() {
         <h1 style={{ fontWeight: 700, fontSize: "1rem", color: "var(--text-dim)", letterSpacing: "0.04em" }}>イベント一覧</h1>
         <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
           <Link href="/events/new" style={{
-            background: "linear-gradient(135deg, #00e5ff, #7b2fff)",
+            background: "linear-gradient(135deg, #00e676, #00b4d8)",
             color: "#fff",
             padding: "0.35rem 0.9rem",
             borderRadius: "9999px",

@@ -73,7 +73,7 @@ export default function EventPage() {
         {event.description && <p style={{ fontSize: "0.9rem", color: "var(--text-dim)", whiteSpace: "pre-wrap", marginBottom: "0.75rem" }}>{event.description}</p>}
         <p style={{ fontSize: "0.85rem", color: "var(--muted)" }}>
           参加予定{" "}
-          <span style={{ fontSize: "1.8rem", fontWeight: 800, color: "var(--primary)", textShadow: "0 0 12px rgba(0,229,255,0.5)" }}>{event.attending_count}</span>
+          <span style={{ fontSize: "1.8rem", fontWeight: 800, color: "var(--primary)", textShadow: "0 0 12px rgba(0,230,118,0.5)" }}>{event.attending_count}</span>
           {" "}人
         </p>
       </div>
@@ -87,7 +87,7 @@ export default function EventPage() {
           gap: "0.5rem", background: "#06C755", color: "#fff",
           borderRadius: "9999px", padding: "0.8rem", fontWeight: 700,
           fontSize: "0.95rem", textDecoration: "none",
-          boxShadow: "0 0 16px rgba(6,199,85,0.25)",
+          boxShadow: "0 0 16px rgba(0,230,118,0.2)",
         }}
       >
         LINEで共有する
@@ -97,7 +97,7 @@ export default function EventPage() {
         <Link href={`/events/${id}/edit`} style={{ ...btnBase, textAlign: "center", textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
           編集
         </Link>
-        <button onClick={handleDelete} style={{ ...btnBase, color: "var(--danger)", borderColor: "rgba(255,45,85,0.25)" }}>
+        <button onClick={handleDelete} style={{ ...btnBase, color: "var(--danger)", borderColor: "rgba(255,77,106,0.25)" }}>
           削除
         </button>
       </div>
