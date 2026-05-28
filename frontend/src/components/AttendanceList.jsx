@@ -1,34 +1,25 @@
 "use client"
 
 import { useState } from "react"
-import { Attendance, updateAttendance, deleteAttendance } from "@/lib/api"
+import { updateAttendance, deleteAttendance } from "@/lib/api"
 
-const STATUS: Record<Attendance["status"], { label: string; color: string; bg: string }> = {
+const STATUS = {
   attending:     { label: "参加",   color: "#00e599", bg: "rgba(0,229,153,0.12)" },
   not_attending: { label: "不参加", color: "#888",    bg: "rgba(136,136,136,0.1)" },
   undecided:     { label: "未定",   color: "#f59e0b", bg: "rgba(245,158,11,0.1)" },
 }
 
-const OPTIONS: { value: Attendance["status"]; label: string }[] = [
+const OPTIONS = [
   { value: "attending",     label: "参加" },
   { value: "not_attending", label: "不参加" },
   { value: "undecided",     label: "未定" },
 ]
 
-type Filter = "all" | Attendance["status"]
-
-interface Props {
-  eventId: string
-  attendances: Attendance[]
-  onUpdated: (a: Attendance) => void
-  onDeleted: (id: string) => void
-}
-
-export default function AttendanceList({ eventId, attendances, onUpdated, onDeleted }: Props) {
-  const [filter, setFilter] = useState<Filter>("all")
-  const [editingId, setEditingId] = useState<string | null>(null)
+export default function AttendanceList({ eventId, attendances, onUpdated, onDeleted }) {
+  const [filter, setFilter] = useState("all")
+  const [editingId, setEditingId] = useState(null)
   const [editName, setEditName] = useState("")
-  const [editStatus, setEditStatus] = useState<Attendance["status"]>("attending")
+  const [editStatus, setEditStatus] = useState("attending")
   const [editMemo, setEditMemo] = useState("")
   const [saving, setSaving] = useState(false)
 
@@ -41,28 +32,28 @@ export default function AttendanceList({ eventId, attendances, onUpdated, onDele
 
   const filtered = filter === "all" ? attendances : attendances.filter(a => a.status === filter)
 
-  const tabs: { value: Filter; label: string }[] = [
+  const tabs = [
     { value: "all",           label: "全員" },
     { value: "attending",     label: "参加" },
     { value: "not_attending", label: "不参加" },
     { value: "undecided",     label: "未定" },
   ]
 
-  function startEdit(a: Attendance) {
+  function startEdit(a) {
     setEditingId(a.id)
     setEditName(a.name)
     setEditStatus(a.status)
     setEditMemo(a.memo ?? "")
   }
 
-  async function handleDelete(attendanceId: string) {
+  async function handleDelete(attendanceId) {
     if (!confirm("この回答を削除しますか？")) return
     await deleteAttendance(eventId, attendanceId)
     onDeleted(attendanceId)
     setEditingId(null)
   }
 
-  async function handleSave(attendanceId: string) {
+  async function handleSave(attendanceId) {
     if (!editName.trim()) return
     setSaving(true)
     try {
@@ -76,11 +67,9 @@ export default function AttendanceList({ eventId, attendances, onUpdated, onDele
 
   return (
     <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "12px", overflow: "hidden" }}>
-      {/* タブ */}
       <div style={{ display: "flex", borderBottom: "1px solid var(--border)", background: "var(--bg)" }}>
         {tabs.map((tab) => {
           const active = filter === tab.value
-          const count = counts[tab.value]
           return (
             <button
               key={tab.value}
@@ -102,7 +91,7 @@ export default function AttendanceList({ eventId, attendances, onUpdated, onDele
                 color: active ? "var(--primary)" : "var(--muted)",
                 borderRadius: "4px", padding: "0 0.35rem",
                 fontSize: "0.72rem", fontWeight: 700,
-              }}>{count}</span>
+              }}>{counts[tab.value]}</span>
             </button>
           )
         })}
@@ -163,15 +152,8 @@ export default function AttendanceList({ eventId, attendances, onUpdated, onDele
                       {a.memo && <p style={{ fontSize: "0.8rem", color: "var(--muted)", marginTop: "0.2rem", lineHeight: 1.45 }}>{a.memo}</p>}
                     </div>
                     <div style={{ display: "flex", alignItems: "center", gap: "0.6rem", flexShrink: 0 }}>
-                      <span style={{
-                        fontSize: "0.75rem", fontWeight: 600, color: s.color,
-                        background: s.bg, borderRadius: "5px", padding: "0.15rem 0.5rem",
-                      }}>{s.label}</span>
-                      <button onClick={() => startEdit(a)} style={{
-                        fontSize: "0.75rem", color: "var(--muted)", background: "none",
-                        border: "1px solid var(--border)", borderRadius: "5px",
-                        cursor: "pointer", padding: "0.15rem 0.5rem",
-                      }}>編集</button>
+                      <span style={{ fontSize: "0.75rem", fontWeight: 600, color: s.color, background: s.bg, borderRadius: "5px", padding: "0.15rem 0.5rem" }}>{s.label}</span>
+                      <button onClick={() => startEdit(a)} style={{ fontSize: "0.75rem", color: "var(--muted)", background: "none", border: "1px solid var(--border)", borderRadius: "5px", cursor: "pointer", padding: "0.15rem 0.5rem" }}>編集</button>
                     </div>
                   </div>
                 )}

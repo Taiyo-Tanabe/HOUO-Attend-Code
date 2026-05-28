@@ -1,14 +1,13 @@
-import type { Metadata } from "next"
 import Link from "next/link"
 import "./globals.css"
 import { AuthProvider } from "@/contexts/AuthContext"
 
-export const metadata: Metadata = {
+export const metadata = {
   title: "HOUO Attend",
   description: "法桜交流会のイベント管理アプリ",
 }
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="ja">
       <body style={{ backgroundColor: "var(--bg)", color: "var(--text)", minHeight: "100vh" }}>

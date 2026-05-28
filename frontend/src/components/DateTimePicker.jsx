@@ -1,19 +1,6 @@
 "use client"
 
-interface Fields {
-  year:   number | null
-  month:  number | null
-  day:    number | null
-  hour:   number | null
-  minute: number | null
-}
-
-interface Props {
-  value: Fields
-  onChange: (f: Fields) => void
-}
-
-const sel: React.CSSProperties = {
+const sel = {
   background: "var(--card-2)",
   color: "var(--text)",
   border: "1px solid var(--border)",
@@ -26,9 +13,9 @@ const sel: React.CSSProperties = {
   minWidth: 0,
 }
 
-const dim: React.CSSProperties = { ...sel, opacity: 0.35, cursor: "not-allowed" }
+const dim = { ...sel, opacity: 0.35, cursor: "not-allowed" }
 
-export default function DateTimePicker({ value, onChange }: Props) {
+export default function DateTimePicker({ value, onChange }) {
   const now = new Date()
   const years = [now.getFullYear(), now.getFullYear() + 1, now.getFullYear() + 2]
   const months = Array.from({ length: 12 }, (_, i) => i + 1)
@@ -37,23 +24,20 @@ export default function DateTimePicker({ value, onChange }: Props) {
   const hours = Array.from({ length: 24 }, (_, i) => i)
   const minutes = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55]
 
-  function set(patch: Partial<Fields>) {
+  function set(patch) {
     const next = { ...value, ...patch }
-    // 日が範囲外になったら補正
     if (next.year && next.month && next.day) {
       const max = new Date(next.year, next.month, 0).getDate()
       if (next.day > max) next.day = max
     }
-    // 時が未定なら分もリセット
     if (patch.hour === null) next.minute = null
     onChange(next)
   }
 
-  const toNum = (v: string) => v === "" ? null : Number(v)
+  const toNum = (v) => v === "" ? null : Number(v)
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-      {/* 年・月・日 */}
       <div style={{ display: "flex", gap: "0.4rem" }}>
         <select value={value.year ?? ""} onChange={e => set({ year: toNum(e.target.value) })} style={sel}>
           <option value="">年・未定</option>
@@ -68,7 +52,6 @@ export default function DateTimePicker({ value, onChange }: Props) {
           {days.map(d => <option key={d} value={d}>{d}日</option>)}
         </select>
       </div>
-      {/* 時・分 */}
       <div style={{ display: "flex", gap: "0.4rem" }}>
         <select value={value.hour ?? ""} onChange={e => set({ hour: toNum(e.target.value) })} style={sel}>
           <option value="">時刻・未定</option>

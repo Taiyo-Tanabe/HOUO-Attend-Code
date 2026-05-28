@@ -3,12 +3,12 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useAuth } from "@/contexts/AuthContext"
-import { getEvents, Event } from "@/lib/api"
+import { getEvents } from "@/lib/api"
 import EventCard from "@/components/EventCard"
 
 export default function HomePage() {
   const { token, role, isLoading, login, logout } = useAuth()
-  const [events, setEvents] = useState<Event[]>([])
+  const [events, setEvents] = useState([])
   const [code, setCode] = useState("")
   const [error, setError] = useState("")
   const [submitting, setSubmitting] = useState(false)
@@ -20,7 +20,7 @@ export default function HomePage() {
     getEvents().then(setEvents).catch(() => setEvents([])).finally(() => setFetching(false))
   }, [token])
 
-  async function handleLogin(e: React.FormEvent) {
+  async function handleLogin(e) {
     e.preventDefault()
     setError("")
     setSubmitting(true)
@@ -40,12 +40,7 @@ export default function HomePage() {
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "68vh", gap: "2.5rem" }}>
         <div style={{ textAlign: "center" }}>
           <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "0.7rem", marginBottom: "0.6rem" }}>
-            <span style={{
-              width: "40px", height: "40px", borderRadius: "12px",
-              background: "var(--primary)",
-              display: "inline-flex", alignItems: "center", justifyContent: "center",
-              fontSize: "1.1rem", fontWeight: 900, color: "#000",
-            }}>H</span>
+            <span style={{ width: "40px", height: "40px", borderRadius: "12px", background: "var(--primary)", display: "inline-flex", alignItems: "center", justifyContent: "center", fontSize: "1.1rem", fontWeight: 900, color: "#000" }}>H</span>
             <span style={{ fontSize: "1.6rem", fontWeight: 800, color: "var(--text)", letterSpacing: "-0.01em" }}>HOUO Attend</span>
           </div>
           <p style={{ color: "var(--text-dim)", fontSize: "0.88rem", marginBottom: "0.25rem" }}>法桜交流会のイベント管理アプリへようこそ。</p>
@@ -53,14 +48,7 @@ export default function HomePage() {
         </div>
 
         <form onSubmit={handleLogin} style={{ width: "100%", maxWidth: "320px", display: "flex", flexDirection: "column", gap: "0.8rem" }}>
-          <input
-            type="text"
-            value={code}
-            onChange={(e) => setCode(e.target.value)}
-            placeholder="コードを入力"
-            autoFocus
-            style={{ textAlign: "center", fontSize: "1rem", letterSpacing: "0.1em", padding: "0.85rem 1rem" }}
-          />
+          <input type="text" value={code} onChange={(e) => setCode(e.target.value)} placeholder="コードを入力" autoFocus style={{ textAlign: "center", fontSize: "1rem", letterSpacing: "0.1em", padding: "0.85rem 1rem" }} />
           {error && <p style={{ color: "var(--danger)", fontSize: "0.85rem", textAlign: "center" }}>{error}</p>}
           <button
             type="submit"
@@ -86,19 +74,13 @@ export default function HomePage() {
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.1rem" }}>
         <span style={{ fontWeight: 600, fontSize: "0.78rem", color: "var(--muted)", letterSpacing: "0.08em", textTransform: "uppercase" }}>イベント一覧</span>
         <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
-          <Link href="/events/new" style={{
-            background: "var(--primary)", color: "#000",
-            padding: "0.4rem 1rem", borderRadius: "8px",
-            fontSize: "0.82rem", fontWeight: 700, textDecoration: "none",
-          }}>
+          <Link href="/events/new" style={{ background: "var(--primary)", color: "#000", padding: "0.4rem 1rem", borderRadius: "8px", fontSize: "0.82rem", fontWeight: 700, textDecoration: "none" }}>
             ＋ 作成
           </Link>
           {role === "admin" && (
             <Link href="/settings" style={{ fontSize: "0.78rem", color: "var(--muted)", textDecoration: "none" }}>設定</Link>
           )}
-          <button onClick={logout} style={{ fontSize: "0.78rem", color: "var(--muted)", background: "none", border: "none", cursor: "pointer" }}>
-            退出
-          </button>
+          <button onClick={logout} style={{ fontSize: "0.78rem", color: "var(--muted)", background: "none", border: "none", cursor: "pointer" }}>退出</button>
         </div>
       </div>
 

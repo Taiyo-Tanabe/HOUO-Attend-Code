@@ -1,7 +1,6 @@
 import Link from "next/link"
-import { Event } from "@/lib/api"
 
-export default function EventCard({ event }: { event: Event }) {
+export default function EventCard({ event }) {
   return (
     <Link href={`/events/${event.id}`} style={{ textDecoration: "none" }}>
       <div style={{
@@ -13,12 +12,12 @@ export default function EventCard({ event }: { event: Event }) {
         transition: "border-color 0.15s, background 0.15s",
       }}
         onMouseEnter={e => {
-          const el = e.currentTarget as HTMLElement
+          const el = e.currentTarget
           el.style.borderColor = "rgba(0,229,153,0.35)"
           el.style.background = "var(--card-hover)"
         }}
         onMouseLeave={e => {
-          const el = e.currentTarget as HTMLElement
+          const el = e.currentTarget
           el.style.borderColor = "rgba(255,255,255,0.09)"
           el.style.background = "var(--card)"
         }}
