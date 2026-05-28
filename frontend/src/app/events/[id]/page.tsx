@@ -7,11 +7,10 @@ import { getEvent, deleteEvent, EventDetail } from "@/lib/api"
 import AttendanceForm from "@/components/AttendanceForm"
 import AttendanceList from "@/components/AttendanceList"
 
-
 const btnBase: React.CSSProperties = {
   flex: 1, border: "1px solid var(--border)", background: "none",
   color: "var(--text-dim)", borderRadius: "12px", padding: "0.6rem",
-  fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", transition: "background 0.15s",
+  fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", transition: "all 0.15s",
 }
 
 export default function EventPage() {
@@ -63,14 +62,18 @@ export default function EventPage() {
     <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
       <Link href="/" style={{ fontSize: "0.82rem", color: "var(--primary)", textDecoration: "none" }}>← 一覧に戻る</Link>
 
-      <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "18px", padding: "1.25rem 1.5rem" }}>
-        <p style={{ fontSize: "0.75rem", color: "var(--muted)", marginBottom: "0.3rem" }}>{event.date_display}</p>
+      <div style={{
+        background: "var(--card)", border: "1px solid var(--border)",
+        borderRadius: "16px", padding: "1.25rem 1.5rem",
+        boxShadow: "0 2px 20px rgba(0,0,0,0.4)",
+      }}>
+        <p style={{ fontSize: "0.73rem", color: "var(--muted)", marginBottom: "0.3rem", letterSpacing: "0.04em" }}>{event.date_display}</p>
         <h1 style={{ fontSize: "1.3rem", fontWeight: 800, color: "var(--text)", marginBottom: "0.5rem" }}>{event.title}</h1>
         {event.location && <p style={{ fontSize: "0.85rem", color: "var(--text-dim)", marginBottom: "0.5rem" }}>📍 {event.location}</p>}
         {event.description && <p style={{ fontSize: "0.9rem", color: "var(--text-dim)", whiteSpace: "pre-wrap", marginBottom: "0.75rem" }}>{event.description}</p>}
         <p style={{ fontSize: "0.85rem", color: "var(--muted)" }}>
           参加予定{" "}
-          <span style={{ fontSize: "1.8rem", fontWeight: 800, color: "var(--primary)" }}>{event.attending_count}</span>
+          <span style={{ fontSize: "1.8rem", fontWeight: 800, color: "var(--primary)", textShadow: "0 0 12px rgba(0,229,255,0.5)" }}>{event.attending_count}</span>
           {" "}人
         </p>
       </div>
@@ -84,6 +87,7 @@ export default function EventPage() {
           gap: "0.5rem", background: "#06C755", color: "#fff",
           borderRadius: "9999px", padding: "0.8rem", fontWeight: 700,
           fontSize: "0.95rem", textDecoration: "none",
+          boxShadow: "0 0 16px rgba(6,199,85,0.25)",
         }}
       >
         LINEで共有する
@@ -93,7 +97,7 @@ export default function EventPage() {
         <Link href={`/events/${id}/edit`} style={{ ...btnBase, textAlign: "center", textDecoration: "none", display: "flex", alignItems: "center", justifyContent: "center" }}>
           編集
         </Link>
-        <button onClick={handleDelete} style={{ ...btnBase, color: "var(--danger)", borderColor: "rgba(248,113,113,0.3)" }}>
+        <button onClick={handleDelete} style={{ ...btnBase, color: "var(--danger)", borderColor: "rgba(255,45,85,0.25)" }}>
           削除
         </button>
       </div>

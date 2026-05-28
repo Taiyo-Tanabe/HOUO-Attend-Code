@@ -5,11 +5,17 @@ import { registerAttendance, Attendance } from "@/lib/api"
 
 type Status = Attendance["status"]
 
-const OPTIONS: { value: Status; label: string; active: string }[] = [
-  { value: "attending",     label: "参加",   active: "linear-gradient(135deg, var(--primary), #0ea5e9)" },
-  { value: "not_attending", label: "不参加", active: "var(--card-hover)" },
-  { value: "undecided",     label: "未定",   active: "rgba(251,191,36,0.25)" },
+const OPTIONS: { value: Status; label: string; glow: string }[] = [
+  { value: "attending",     label: "参加",   glow: "rgba(0,229,255,0.35)" },
+  { value: "not_attending", label: "不参加", glow: "rgba(120,80,255,0.3)" },
+  { value: "undecided",     label: "未定",   glow: "rgba(255,214,0,0.3)" },
 ]
+
+const ACTIVE_BG: Record<Status, string> = {
+  attending:     "linear-gradient(135deg, #00e5ff, #7b2fff)",
+  not_attending: "var(--card-hover)",
+  undecided:     "rgba(255,214,0,0.15)",
+}
 
 interface Props {
   eventId: string
@@ -40,8 +46,12 @@ export default function AttendanceForm({ eventId, onSubmitted }: Props) {
 
   if (done) {
     return (
-      <div style={{ background: "rgba(41,182,246,0.08)", border: "1px solid rgba(41,182,246,0.2)", borderRadius: "18px", padding: "1.5rem", textAlign: "center" }}>
-        <p style={{ fontWeight: 700, color: "var(--primary)", fontSize: "1.05rem" }}>登録しました！</p>
+      <div style={{
+        background: "var(--card)", border: "1px solid rgba(0,229,255,0.25)",
+        borderRadius: "16px", padding: "1.5rem", textAlign: "center",
+        boxShadow: "0 0 20px rgba(0,229,255,0.08)",
+      }}>
+        <p style={{ fontWeight: 700, color: "var(--primary)", fontSize: "1.05rem", textShadow: "0 0 8px rgba(0,229,255,0.4)" }}>登録しました！</p>
         <button onClick={() => setDone(false)} style={{ marginTop: "0.5rem", fontSize: "0.8rem", color: "var(--muted)", background: "none", border: "none", cursor: "pointer", textDecoration: "underline" }}>
           もう一度登録する
         </button>
@@ -50,8 +60,13 @@ export default function AttendanceForm({ eventId, onSubmitted }: Props) {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "18px", padding: "1.25rem", display: "flex", flexDirection: "column", gap: "0.85rem" }}>
-      <p style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text)" }}>出欠を登録する</p>
+    <form onSubmit={handleSubmit} style={{
+      background: "var(--card)", border: "1px solid var(--border)",
+      borderRadius: "16px", padding: "1.25rem",
+      display: "flex", flexDirection: "column", gap: "0.85rem",
+      boxShadow: "0 2px 20px rgba(0,0,0,0.4)",
+    }}>
+      <p style={{ fontWeight: 700, fontSize: "0.95rem", color: "var(--text)", letterSpacing: "0.02em" }}>出欠を登録する</p>
 
       <input
         type="text"
@@ -70,9 +85,11 @@ export default function AttendanceForm({ eventId, onSubmitted }: Props) {
             style={{
               flex: 1, borderRadius: "9999px", padding: "0.65rem",
               fontWeight: 700, fontSize: "0.85rem",
-              border: "1px solid var(--border)", cursor: "pointer", transition: "all 0.15s",
-              background: status === opt.value ? opt.active : "var(--card-2)",
+              border: status === opt.value ? "1px solid transparent" : "1px solid var(--border)",
+              cursor: "pointer", transition: "all 0.15s",
+              background: status === opt.value ? ACTIVE_BG[opt.value] : "var(--card-2)",
               color: "var(--text)",
+              boxShadow: status === opt.value ? `0 0 12px ${opt.glow}` : "none",
             }}
           >
             {opt.label}
@@ -93,11 +110,13 @@ export default function AttendanceForm({ eventId, onSubmitted }: Props) {
         type="submit"
         disabled={submitting || !name.trim()}
         style={{
-          background: submitting || !name.trim() ? "var(--card-2)" : "linear-gradient(135deg, var(--primary), #0ea5e9)",
-          color: "var(--text)", border: "none", borderRadius: "9999px",
+          background: submitting || !name.trim() ? "var(--card-2)" : "linear-gradient(135deg, #00e5ff, #7b2fff)",
+          color: "#fff", border: "none", borderRadius: "9999px",
           padding: "0.8rem", fontWeight: 700, fontSize: "0.95rem",
           cursor: submitting || !name.trim() ? "not-allowed" : "pointer",
-          opacity: submitting || !name.trim() ? 0.5 : 1, transition: "all 0.15s",
+          opacity: submitting || !name.trim() ? 0.45 : 1,
+          transition: "all 0.2s",
+          boxShadow: submitting || !name.trim() ? "none" : "0 0 16px rgba(0,229,255,0.28)",
         }}
       >
         {submitting ? "登録中…" : "登録する"}

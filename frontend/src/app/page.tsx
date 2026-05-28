@@ -40,16 +40,16 @@ export default function HomePage() {
 
   if (!token) {
     return (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "60vh", gap: "2rem" }}>
+      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "65vh", gap: "2.5rem" }}>
         <div style={{ textAlign: "center" }}>
-          <p style={{ fontSize: "1.8rem", fontWeight: 800, letterSpacing: "0.04em", marginBottom: "0.25rem" }}>
-            <span style={{ color: "var(--brand)" }}>HOUO</span>
-            <span style={{ color: "var(--primary)" }}> Attend</span>
+          <p style={{ fontSize: "2.2rem", fontWeight: 900, letterSpacing: "0.06em", marginBottom: "0.4rem" }}>
+            <span style={{ color: "var(--brand)", textShadow: "0 0 20px rgba(255,45,120,0.7)" }}>HOUO</span>
+            <span style={{ color: "var(--primary)", textShadow: "0 0 20px rgba(0,229,255,0.7)" }}> Attend</span>
           </p>
-          <p style={{ color: "var(--muted)", fontSize: "0.85rem" }}>団体コードを入力して入場してください</p>
+          <p style={{ color: "var(--muted)", fontSize: "0.85rem", letterSpacing: "0.02em" }}>団体コードを入力して入場してください</p>
         </div>
 
-        <form onSubmit={handleLogin} style={{ width: "100%", maxWidth: "320px", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+        <form onSubmit={handleLogin} style={{ width: "100%", maxWidth: "320px", display: "flex", flexDirection: "column", gap: "0.85rem" }}>
           <input
             type="text"
             value={code}
@@ -58,21 +58,24 @@ export default function HomePage() {
             autoFocus
             style={{ textAlign: "center", fontSize: "1.1rem", letterSpacing: "0.15em" }}
           />
-          {error && <p style={{ color: "var(--danger)", fontSize: "0.85rem", textAlign: "center" }}>{error}</p>}
+          {error && <p style={{ color: "var(--danger)", fontSize: "0.85rem", textAlign: "center", textShadow: "0 0 8px rgba(255,45,85,0.5)" }}>{error}</p>}
           <button
             type="submit"
             disabled={submitting || !code.trim()}
             style={{
-              background: submitting || !code.trim() ? "var(--card-2)" : "linear-gradient(135deg, var(--primary), #0ea5e9)",
-              color: "var(--text)",
+              background: submitting || !code.trim()
+                ? "var(--card-2)"
+                : "linear-gradient(135deg, #00e5ff, #7b2fff)",
+              color: "#fff",
               border: "none",
               borderRadius: "9999px",
-              padding: "0.8rem",
+              padding: "0.85rem",
               fontWeight: 700,
               fontSize: "1rem",
               cursor: submitting || !code.trim() ? "not-allowed" : "pointer",
-              opacity: submitting || !code.trim() ? 0.5 : 1,
-              transition: "all 0.15s",
+              opacity: submitting || !code.trim() ? 0.45 : 1,
+              transition: "all 0.2s",
+              boxShadow: submitting || !code.trim() ? "none" : "0 0 18px rgba(0,229,255,0.3)",
             }}
           >
             {submitting ? "確認中…" : "入場する"}
@@ -85,16 +88,17 @@ export default function HomePage() {
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.25rem" }}>
-        <h1 style={{ fontWeight: 700, fontSize: "1.05rem", color: "var(--text-dim)", letterSpacing: "0.03em" }}>イベント一覧</h1>
+        <h1 style={{ fontWeight: 700, fontSize: "1rem", color: "var(--text-dim)", letterSpacing: "0.04em" }}>イベント一覧</h1>
         <div style={{ display: "flex", gap: "0.75rem", alignItems: "center" }}>
           <Link href="/events/new" style={{
-            background: "linear-gradient(135deg, var(--primary), #0ea5e9)",
+            background: "linear-gradient(135deg, #00e5ff, #7b2fff)",
             color: "#fff",
             padding: "0.35rem 0.9rem",
             borderRadius: "9999px",
             fontSize: "0.82rem",
             fontWeight: 700,
             textDecoration: "none",
+            boxShadow: "0 0 12px rgba(0,229,255,0.25)",
           }}>
             ＋ 作成
           </Link>
