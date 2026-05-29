@@ -1,4 +1,5 @@
 import os
+import bcrypt
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from database import Base, engine, SessionLocal
@@ -8,13 +9,17 @@ from routers import events, auth, settings
 Base.metadata.create_all(bind=engine)
 
 
+def hash_code(code: str) -> str:
+    return bcrypt.hashpw(code.encode(), bcrypt.gensalt()).decode()
+
+
 def seed_settings():
     db = SessionLocal()
     try:
         if not db.get(Setting, "member_code"):
-            db.add(Setting(key="member_code", value=os.environ["MEMBER_CODE"]))
+            db.add(Setting(key="member_code", value=hash_code(os.environ["MEMBER_CODE"])))
         if not db.get(Setting, "admin_code"):
-            db.add(Setting(key="admin_code", value=os.environ["ADMIN_CODE"]))
+            db.add(Setting(key="admin_code", value=hash_code(os.environ["ADMIN_CODE"])))
         db.commit()
     finally:
         db.close()
