@@ -2,12 +2,15 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import { useRouter, useSearchParams } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { getEvents } from "@/lib/api"
 import EventCard from "@/components/EventCard"
 
 export default function HomePage() {
   const { token, role, isLoading, login, logout } = useAuth()
+  const router = useRouter()
+  const searchParams = useSearchParams()
   const [events, setEvents] = useState([])
   const [code, setCode] = useState("")
   const [error, setError] = useState("")
@@ -26,6 +29,8 @@ export default function HomePage() {
     setSubmitting(true)
     try {
       await login(code.trim())
+      const redirect = searchParams.get("redirect")
+      if (redirect) router.push(redirect)
     } catch {
       setError("コードが違います")
     } finally {

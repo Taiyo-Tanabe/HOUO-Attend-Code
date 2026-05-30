@@ -1,3 +1,4 @@
+import { Suspense } from "react"
 import Link from "next/link"
 import "./globals.css"
 import { AuthProvider } from "@/contexts/AuthContext"
@@ -36,7 +37,7 @@ export default function RootLayout({ children }) {
             </Link>
           </header>
           <main style={{ maxWidth: "520px", margin: "0 auto", padding: "1.5rem 1rem 4rem" }}>
-            {children}
+            <Suspense>{children}</Suspense>
           </main>
         </AuthProvider>
       </body>

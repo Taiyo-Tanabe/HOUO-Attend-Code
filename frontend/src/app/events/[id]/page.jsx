@@ -4,18 +4,28 @@ import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
 import { getEvent, deleteEvent } from "@/lib/api"
+import { useAuth } from "@/contexts/AuthContext"
 import AttendanceForm from "@/components/AttendanceForm"
 import AttendanceList from "@/components/AttendanceList"
 
 export default function EventPage() {
   const { id } = useParams()
   const router = useRouter()
+  const { token, isLoading: authLoading } = useAuth()
   const [event, setEvent] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
+    if (!authLoading && !token) {
+      router.replace(`/?redirect=/events/${id}`)
+    }
+  }, [authLoading, token, id])
+
+  useEffect(() => {
+    if (!token) return
+    setLoading(true)
     getEvent(id).then(setEvent).finally(() => setLoading(false))
-  }, [id])
+  }, [id, token])
 
   async function handleDelete() {
     if (!confirm("このイベントを削除しますか？")) return
