@@ -44,7 +44,7 @@ export default function HomePage() {
       if (e.message === "コードが違います") {
         setError("コードが違います")
       } else {
-        setError("サーバーに接続できませんでした。少し待ってから再試行してください。")
+        setError("サーバーに接続できませんでした。再接続してください。")
       }
     } finally {
       setSubmitting(false)
@@ -105,7 +105,7 @@ export default function HomePage() {
       {fetching && <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0", fontSize: "0.88rem" }}>読み込み中…</p>}
       {!fetching && fetchError && (
         <div style={{ textAlign: "center", padding: "3rem 0", color: "var(--muted)" }}>
-          <p style={{ fontSize: "0.88rem", marginBottom: "1rem" }}>読み込みに失敗しました。サーバーが起動中の場合は少し待ってから再試行してください。</p>
+          <p style={{ fontSize: "0.88rem", marginBottom: "1rem" }}>読み込みに失敗しました。再接続してください。</p>
           <button onClick={loadEvents} style={{ background: "var(--primary)", color: "#000", border: "none", borderRadius: "8px", padding: "0.5rem 1.2rem", fontWeight: 700, fontSize: "0.85rem", cursor: "pointer" }}>
             再試行
           </button>
