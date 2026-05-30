@@ -90,6 +90,12 @@ Vercel (Next.js)  →  Render (FastAPI)  →  Neon (PostgreSQL)
 - Root Directory: `frontend`
 - 環境変数: `NEXT_PUBLIC_API_URL` にRenderのURLを設定
 
+## 工夫した点
+
+- Renderの無料プランではデプロイのたびにファイルが消えるため、アバター画像をBase64エンコードしてDBに直接保存する方式を採用し、外部ストレージなしで永続化を実現した
+- イベントIDにUUIDを採用することで、URLから件数や連番が推測されるのを防止した
+- Docker Composeでフロントエンド・バックエンド・DBを一括起動できる開発環境を構築した
+
 ## ライセンス
 
 MIT
