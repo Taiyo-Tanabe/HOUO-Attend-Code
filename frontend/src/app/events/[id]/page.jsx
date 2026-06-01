@@ -14,6 +14,7 @@ export default function EventPage() {
   const { token, isLoading: authLoading } = useAuth()
   const [event, setEvent] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [fetchError, setFetchError] = useState(null) // null | "not_found" | "server"
 
   useEffect(() => {
     if (!authLoading && !token) {
@@ -21,10 +22,18 @@ export default function EventPage() {
     }
   }, [authLoading, token, id])
 
+  function loadEvent() {
+    setLoading(true)
+    setFetchError(null)
+    getEvent(id)
+      .then(setEvent)
+      .catch(e => setFetchError(e.message === "イベントが見つかりません" ? "not_found" : "server"))
+      .finally(() => setLoading(false))
+  }
+
   useEffect(() => {
     if (!token) return
-    setLoading(true)
-    getEvent(id).then(setEvent).finally(() => setLoading(false))
+    loadEvent()
   }, [id, token])
 
   async function handleDelete() {
@@ -58,7 +67,15 @@ export default function EventPage() {
   }
 
   if (loading) return <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0", fontSize: "0.85rem" }}>読み込み中…</p>
-  if (!event) return <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0", fontSize: "0.85rem" }}>イベントが見つかりません</p>
+  if (fetchError === "not_found") return <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0", fontSize: "0.85rem" }}>イベントが見つかりません</p>
+  if (fetchError === "server") return (
+    <div style={{ textAlign: "center", padding: "3rem 0", color: "var(--muted)" }}>
+      <p style={{ fontSize: "0.88rem", marginBottom: "1rem" }}>読み込みに失敗しました。</p>
+      <button onClick={loadEvent} style={{ background: "var(--primary)", color: "#000", border: "none", borderRadius: "8px", padding: "0.5rem 1.2rem", fontWeight: 700, fontSize: "0.85rem", cursor: "pointer" }}>
+        再試行
+      </button>
+    </div>
+  )
 
   const lineText = encodeURIComponent(`【HOUO Attend】\n${event.title}\n${event.date_display}\n${typeof window !== "undefined" ? window.location.href : ""}`)
 
