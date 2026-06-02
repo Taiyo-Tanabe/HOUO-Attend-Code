@@ -96,6 +96,7 @@ Vercel (Next.js)  →  Render (FastAPI)  →  Neon (PostgreSQL)
 - イベントIDにUUIDを採用することで、URLから件数や連番が推測されるのを防止した
 - Docker Composeでフロントエンド・バックエンド・DBを一括起動できる開発環境を構築した
 - Renderのコールドスタート（アイドル後の起動遅延）によりAPIが失敗した際、認証エラーとサーバーエラーを区別して適切なメッセージを表示し、イベント一覧・個別ページには再試行ボタンを設けた
+- GitHub Actionsのcronジョブで5分ごとにバックエンドへpingを送り、Renderのスリープを防止した
 
 ## ライセンス
 
