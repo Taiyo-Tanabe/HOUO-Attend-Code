@@ -4,6 +4,8 @@
 
 🔗 **[https://houo-attend-sample.vercel.app](https://houo-attend-sample.vercel.app)**
 
+> デモ用メンバーコード：`houo2024`
+
 ![スクリーンショット](docs/houoattendscreenshot.png)
 
 ---
