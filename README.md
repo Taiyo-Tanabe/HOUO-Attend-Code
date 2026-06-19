@@ -2,7 +2,7 @@
 
 **法桜交流会（ほうおうこうりゅうかい）専用のイベント出欠管理Webアプリ**
 
-🔗 **[https://houo-attend.vercel.app](https://houo-attend.vercel.app)**
+🔗 **[https://houo-attend-sample.vercel.app](https://houo-attend-sample.vercel.app)**
 
 ![スクリーンショット](docs/houoattendscreenshot.png)
 
