@@ -32,7 +32,7 @@
 | バックエンド | FastAPI + SQLAlchemy 2.0 |
 | データベース | PostgreSQL (Neon) |
 | 認証 | JWT (python-jose) |
-| インフラ | Vercel / Railway / Neon |
+| インフラ | Vercel / Render / Neon |
 | 開発環境 | Docker Compose |
 
 ## ローカル開発
@@ -75,19 +75,20 @@ docker compose up --build
 ## 本番デプロイ
 
 ```
-Vercel (Next.js)  →  Railway (FastAPI)  →  Neon (PostgreSQL)
+Vercel (Next.js)  →  Render (FastAPI)  →  Neon (PostgreSQL)
 ```
 
 **1. Neon** — プロジェクト作成後、接続文字列（`postgresql://...?sslmode=require`）を控える
 
-**2. Railway** — New Project → Deploy from GitHub repo
+**2. Render** — Web Service としてこのリポジトリを接続
 - Root Directory: `backend`
+- Build Command: `pip install -r requirements.txt`
+- Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
 - 環境変数: `DATABASE_URL` `JWT_SECRET` `MEMBER_CODE` `ADMIN_CODE` `CORS_ORIGINS`
-- （`railway.json` により自動的に `uvicorn main:app --host 0.0.0.0 --port $PORT` で起動）
 
 **3. Vercel** — このリポジトリを接続
 - Root Directory: `frontend`
-- 環境変数: `NEXT_PUBLIC_API_URL` にRailwayのURLを設定
+- 環境変数: `NEXT_PUBLIC_API_URL` にRenderのURLを設定
 
 ## 工夫した点
 
@@ -95,6 +96,7 @@ Vercel (Next.js)  →  Railway (FastAPI)  →  Neon (PostgreSQL)
 - イベントIDにUUIDを採用することで、URLから件数や連番が推測されるのを防止した
 - Docker Composeでフロントエンド・バックエンド・DBを一括起動できる開発環境を構築した
 - コールドスタートによりAPIが失敗した際、認証エラーとサーバーエラーを区別して適切なメッセージを表示し、イベント一覧・個別ページには再試行ボタンを設けた
+- GitHub Actionsのcronジョブで5分ごとにバックエンドへpingを送り、Renderのスリープを防止した
 
 ## ライセンス
 
