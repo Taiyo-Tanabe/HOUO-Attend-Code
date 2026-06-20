@@ -9,5 +9,7 @@ jobs:
   ping:
     runs-on: ubuntu-latest
     steps:
-      - name: Ping backend
+      - name: Ping sample backend
         run: curl -sf ${{ secrets.BACKEND_URL }} > /dev/null && echo "OK" || echo "Failed"
+      - name: Ping real backend
+        run: curl -sf ${{ secrets.BACKEND_URL_REAL }} > /dev/null && echo "OK" || echo "Failed"
