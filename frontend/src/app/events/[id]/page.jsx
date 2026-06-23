@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
-import { getEvent, deleteEvent } from "@/lib/api"
+import { getEvent, deleteEvent, generateAnnouncement } from "@/lib/api"
 import { useAuth } from "@/contexts/AuthContext"
 import AttendanceForm from "@/components/AttendanceForm"
 import AttendanceList from "@/components/AttendanceList"
@@ -16,6 +16,9 @@ export default function EventPage() {
   const [event, setEvent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [fetchError, setFetchError] = useState(null) // null | "not_found" | "server"
+  const [announcement, setAnnouncement] = useState("")
+  const [generating, setGenerating] = useState(false)
+  const [genError, setGenError] = useState("")
 
   useEffect(() => {
     if (!authLoading && !token) {
@@ -36,6 +39,28 @@ export default function EventPage() {
     if (!token) return
     loadEvent()
   }, [id, token])
+
+  async function handleGenerateAnnouncement() {
+    setGenError("")
+    setGenerating(true)
+    try {
+      const result = await generateAnnouncement({
+        title: event.title,
+        location: event.location,
+        description: event.description,
+        event_year: event.event_year,
+        event_month: event.event_month,
+        event_day: event.event_day,
+        event_hour: event.event_hour,
+        event_minute: event.event_minute,
+      })
+      setAnnouncement(result.text)
+    } catch (err) {
+      setGenError(err instanceof Error ? err.message : "生成に失敗しました")
+    } finally {
+      setGenerating(false)
+    }
+  }
 
   async function handleDelete() {
     if (!confirm("このイベントを削除しますか？")) return
@@ -107,6 +132,30 @@ export default function EventPage() {
         <button onClick={handleDelete} style={{ flex: 1, border: "1px solid rgba(239,68,68,0.2)", background: "none", color: "var(--danger)", borderRadius: "8px", padding: "0.6rem", fontSize: "0.82rem", fontWeight: 600, cursor: "pointer" }}>
           削除
         </button>
+      </div>
+
+      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+        <button
+          onClick={handleGenerateAnnouncement}
+          disabled={generating}
+          style={{ background: "none", border: "1px solid var(--border)", borderRadius: "8px", padding: "0.6rem", fontWeight: 600, fontSize: "0.82rem", color: generating ? "var(--muted)" : "var(--text)", cursor: generating ? "not-allowed" : "pointer", transition: "all 0.15s" }}
+        >
+          {generating ? "生成中…" : "✨ LINE用告知文を生成する"}
+        </button>
+        {genError && <p style={{ color: "var(--danger)", fontSize: "0.82rem" }}>{genError}</p>}
+        {announcement && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <textarea readOnly value={announcement} rows={7} style={{ resize: "vertical", fontSize: "0.88rem", lineHeight: 1.6 }} />
+            <a
+              href={`https://line.me/R/msg/text/?${encodeURIComponent(announcement)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#06C755", color: "#fff", borderRadius: "8px", padding: "0.6rem", fontWeight: 600, fontSize: "0.82rem", textDecoration: "none" }}
+            >
+              LINEで共有
+            </a>
+          </div>
+        )}
       </div>
 
       <AttendanceForm eventId={id} onSubmitted={handleAttended} />
