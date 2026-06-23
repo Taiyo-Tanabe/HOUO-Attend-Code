@@ -59,8 +59,9 @@ def generate_announcement(body: AnnouncementRequest, _=Depends(require_member)):
         messages=[{
             "role": "user",
             "content": (
-                "以下のイベント情報をもとに、LINEで共有するための告知文を日本語で生成してください。"
-                "簡潔でわかりやすく、参加を促すような内容にしてください。\n\n"
+                "以下のイベント情報をもとに、LINEグループで送れる短い告知文を日本語で作成してください。\n"
+                "情報が少なくても、与えられた内容だけで必ず告知文を完成させてください。\n"
+                "追加情報を求めたり、テンプレートを返したりしないでください。\n\n"
                 + "\n".join(parts)
             ),
         }],
