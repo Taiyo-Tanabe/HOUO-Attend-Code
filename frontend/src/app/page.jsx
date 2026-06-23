@@ -99,7 +99,7 @@ export default function HomePage() {
           {role === "admin" && (
             <Link href="/settings" style={{ fontSize: "0.78rem", color: "var(--muted)", textDecoration: "none" }}>設定</Link>
           )}
-          <button onClick={logout} style={{ fontSize: "0.78rem", color: "var(--muted)", background: "none", border: "none", cursor: "pointer" }}>退出</button>
+          <button onClick={() => { if (confirm("退出しますか？")) logout() }} style={{ fontSize: "0.78rem", color: "var(--muted)", background: "none", border: "none", cursor: "pointer" }}>退出</button>
         </div>
       </div>
 
