@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
-import { createEvent } from "@/lib/api"
+import { createEvent, generateAnnouncement } from "@/lib/api"
 import DateTimePicker from "@/components/DateTimePicker"
 
 const label = { fontSize: "0.78rem", fontWeight: 600, color: "var(--text-dim)", letterSpacing: "0.05em", display: "block", marginBottom: "0.4rem", textTransform: "uppercase" }
@@ -16,6 +16,31 @@ export default function NewEventPage() {
   const [dateFields, setDateFields] = useState({ year: null, month: null, day: null, hour: null, minute: null })
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState("")
+  const [announcement, setAnnouncement] = useState("")
+  const [generating, setGenerating] = useState(false)
+  const [genError, setGenError] = useState("")
+
+  async function handleGenerateAnnouncement() {
+    setGenError("")
+    setGenerating(true)
+    try {
+      const result = await generateAnnouncement({
+        title: title.trim(),
+        location: location.trim(),
+        description: description.trim(),
+        event_year: dateFields.year,
+        event_month: dateFields.month,
+        event_day: dateFields.day,
+        event_hour: dateFields.hour,
+        event_minute: dateFields.minute,
+      })
+      setAnnouncement(result.text)
+    } catch (err) {
+      setGenError(err instanceof Error ? err.message : "生成に失敗しました")
+    } finally {
+      setGenerating(false)
+    }
+  }
 
   async function handleSubmit(e) {
     e.preventDefault()
@@ -52,6 +77,36 @@ export default function NewEventPage() {
           {submitting ? "作成中…" : "作成する"}
         </button>
       </form>
+
+      <div style={{ borderTop: "1px solid var(--border)", paddingTop: "1rem", display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+        <button
+          type="button"
+          onClick={handleGenerateAnnouncement}
+          disabled={generating || !title.trim()}
+          style={{ background: "none", border: "1px solid var(--border)", borderRadius: "10px", padding: "0.75rem", fontWeight: 600, fontSize: "0.9rem", color: generating || !title.trim() ? "var(--muted)" : "var(--text)", cursor: generating || !title.trim() ? "not-allowed" : "pointer", transition: "all 0.15s" }}
+        >
+          {generating ? "生成中…" : "✨ 告知文を生成する"}
+        </button>
+        {genError && <p style={{ color: "var(--danger)", fontSize: "0.85rem" }}>{genError}</p>}
+        {announcement && (
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
+            <textarea
+              readOnly
+              value={announcement}
+              rows={7}
+              style={{ resize: "vertical", fontSize: "0.88rem", lineHeight: 1.6 }}
+            />
+            <a
+              href={`https://line.me/R/msg/text/?${encodeURIComponent(announcement)}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ display: "flex", alignItems: "center", justifyContent: "center", background: "#06C755", color: "#fff", borderRadius: "8px", padding: "0.6rem", fontWeight: 600, fontSize: "0.82rem", textDecoration: "none" }}
+            >
+              LINEで共有
+            </a>
+          </div>
+        )}
+      </div>
     </div>
   )
 }

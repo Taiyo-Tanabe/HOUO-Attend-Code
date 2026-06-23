@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { useAuth } from "@/contexts/AuthContext"
 import { getEvents } from "@/lib/api"
 import EventCard from "@/components/EventCard"
+import Spinner from "@/components/Spinner"
 
 export default function HomePage() {
   const { token, role, isLoading, login, logout } = useAuth()
@@ -102,7 +103,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {fetching && <p style={{ textAlign: "center", color: "var(--muted)", padding: "3rem 0", fontSize: "0.88rem" }}>読み込み中…</p>}
+      {fetching && <Spinner />}
       {!fetching && fetchError && (
         <div style={{ textAlign: "center", padding: "3rem 0", color: "var(--muted)" }}>
           <p style={{ fontSize: "0.88rem", marginBottom: "1rem" }}>読み込みに失敗しました。</p>

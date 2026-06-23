@@ -23,6 +23,8 @@
 - 出欠回答の編集・削除
 - 参加者フィルタリング（全員 / 参加 / 不参加 / 未定）
 - LINEでのイベント共有
+- **AI告知文生成**：イベント情報をもとにLINE共有用の告知文を自動生成（Anthropic Claude）
+- **AI出欠サマリー生成**：参加状況・備考を自然な日本語で要約（Anthropic Claude）
 - 未ログイン状態でイベントURLへアクセスした場合、ログイン後に元のページへ自動遷移
 - 管理者によるコード変更
 
@@ -34,7 +36,8 @@
 | バックエンド | FastAPI + SQLAlchemy 2.0 |
 | データベース | PostgreSQL (Neon) |
 | 認証 | JWT (python-jose) |
-| インフラ | Vercel / Render / Neon |
+| AI | Anthropic Claude (claude-haiku-4-5) |
+| インフラ | Vercel / Railway / Neon |
 | 開発環境 | Docker Compose |
 
 ## ローカル開発
@@ -72,33 +75,35 @@ docker compose up --build
 | `ADMIN_CODE` | 管理者用入場コード |
 | `JWT_SECRET` | JWT署名鍵（`python -c "import secrets; print(secrets.token_hex(32))"` で生成） |
 | `CORS_ORIGINS` | 許可するオリジン（カンマ区切り） |
+| `ANTHROPIC_API_KEY` | Anthropic APIキー（[console.anthropic.com](https://console.anthropic.com) で取得） |
 | `NEXT_PUBLIC_API_URL` | バックエンドのURL |
 
 ## 本番デプロイ
 
 ```
-Vercel (Next.js)  →  Render (FastAPI)  →  Neon (PostgreSQL)
+Vercel (Next.js)  →  Railway (FastAPI)  →  Neon (PostgreSQL)
 ```
 
 **1. Neon** — プロジェクト作成後、接続文字列（`postgresql://...?sslmode=require`）を控える
 
-**2. Render** — Web Service としてこのリポジトリを接続
+**2. Railway** — GitHubリポジトリを接続し新規サービスを作成
 - Root Directory: `backend`
-- Build Command: `pip install -r requirements.txt`
-- Start Command: `uvicorn main:app --host 0.0.0.0 --port $PORT`
-- 環境変数: `DATABASE_URL` `JWT_SECRET` `MEMBER_CODE` `ADMIN_CODE` `CORS_ORIGINS`
+- Builder: Nixpacks（自動検出）
+- Variables: `DATABASE_URL` `JWT_SECRET` `MEMBER_CODE` `ADMIN_CODE` `CORS_ORIGINS` `ANTHROPIC_API_KEY` `PORT=8000`
 
 **3. Vercel** — このリポジトリを接続
 - Root Directory: `frontend`
-- 環境変数: `NEXT_PUBLIC_API_URL` にRenderのURLを設定
+- 環境変数: `NEXT_PUBLIC_API_URL` にRailwayのURLを設定
 
 ## 工夫した点
 
-- Renderの無料プランではデプロイのたびにファイルが消えるため、アバター画像をBase64エンコードしてDBに直接保存する方式を採用し、外部ストレージなしで永続化を実現した
 - イベントIDにUUIDを採用することで、URLから件数や連番が推測されるのを防止した
 - Docker Composeでフロントエンド・バックエンド・DBを一括起動できる開発環境を構築した
 - コールドスタートによりAPIが失敗した際、認証エラーとサーバーエラーを区別して適切なメッセージを表示し、イベント一覧・個別ページには再試行ボタンを設けた
-- GitHub Actionsのcronジョブで5分ごとにバックエンドへpingを送り、Renderのスリープを防止した
+- GitHub Actionsのcronジョブで5分ごとにバックエンド（本番・サンプル両方）へpingを送り、アイドル時のコールドスタートを防止した
+- NeonのDATABASE_URLが`postgres://`スキームで渡される場合に`postgresql://`へ正規化する処理を追加し、psycopg2との互換性を確保した
+- AI告知文生成では、フォームの入力値をそのまま渡す設計にすることで、保存前のプレビューにも対応した
+- Anthropic SDKの遅延インポートにより、`ANTHROPIC_API_KEY` 未設定環境でもサーバー起動を妨げない構造にした
 
 ## ライセンス
 

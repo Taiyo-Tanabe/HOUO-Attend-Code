@@ -75,3 +75,14 @@ export function getCodes() {
 export function updateCodes(data) {
   return request("/api/settings/codes", { method: "PUT", body: JSON.stringify(data) })
 }
+
+export function generateAnnouncement({ title, location, description, event_year, event_month, event_day, event_hour, event_minute }) {
+  return request("/api/events/generate-announcement", {
+    method: "POST",
+    body: JSON.stringify({ title, location: location || null, description: description || null, event_year, event_month, event_day, event_hour, event_minute }),
+  })
+}
+
+export function generateSummary(eventId) {
+  return request(`/api/events/${eventId}/generate-summary`, { method: "POST" })
+}
