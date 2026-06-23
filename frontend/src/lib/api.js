@@ -83,6 +83,3 @@ export function generateAnnouncement({ title, location, description, event_year,
   })
 }
 
-export function generateSummary(eventId) {
-  return request(`/api/events/${eventId}/generate-summary`, { method: "POST" })
-}

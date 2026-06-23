@@ -156,39 +156,3 @@ def delete_event(event_id: str, db: Session = Depends(get_db), _=Depends(require
     db.commit()
 
 
-@router.post("/events/{event_id}/generate-summary", response_model=TextResponse)
-def generate_summary(event_id: str, db: Session = Depends(get_db), _=Depends(require_member)):
-    event = db.get(Event, event_id)
-    if not event:
-        raise HTTPException(status_code=404, detail="イベントが見つかりません")
-    client = _get_anthropic_client()
-    status_labels = {"attending": "参加", "not_attending": "不参加", "undecided": "未定"}
-    attending_count = sum(1 for a in event.attendances if a.status == "attending")
-    not_attending_count = sum(1 for a in event.attendances if a.status == "not_attending")
-    undecided_count = sum(1 for a in event.attendances if a.status == "undecided")
-    memos = [
-        f"・{a.name}（{status_labels[a.status]}）：{a.memo}"
-        for a in event.attendances if a.memo
-    ]
-    lines = [
-        f"イベント名：{event.title}",
-        f"参加：{attending_count}人",
-        f"不参加：{not_attending_count}人",
-        f"未定：{undecided_count}人",
-        f"回答合計：{len(event.attendances)}人",
-    ]
-    if memos:
-        lines.append("備考：\n" + "\n".join(memos))
-    message = client.messages.create(
-        model="claude-haiku-4-5-20251001",
-        max_tokens=600,
-        messages=[{
-            "role": "user",
-            "content": (
-                "以下の出欠情報を、自然な日本語で簡潔に要約してください。"
-                "参加状況の概要を伝え、特記事項があれば触れてください。\n\n"
-                + "\n".join(lines)
-            ),
-        }],
-    )
-    return TextResponse(text=message.content[0].text)

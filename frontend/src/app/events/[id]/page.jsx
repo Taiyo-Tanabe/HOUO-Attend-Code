@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import Link from "next/link"
-import { getEvent, deleteEvent, generateSummary } from "@/lib/api"
+import { getEvent, deleteEvent } from "@/lib/api"
 import { useAuth } from "@/contexts/AuthContext"
 import AttendanceForm from "@/components/AttendanceForm"
 import AttendanceList from "@/components/AttendanceList"
@@ -16,9 +16,6 @@ export default function EventPage() {
   const [event, setEvent] = useState(null)
   const [loading, setLoading] = useState(true)
   const [fetchError, setFetchError] = useState(null) // null | "not_found" | "server"
-  const [summary, setSummary] = useState("")
-  const [generatingSummary, setGeneratingSummary] = useState(false)
-  const [summaryError, setSummaryError] = useState("")
 
   useEffect(() => {
     if (!authLoading && !token) {
@@ -39,19 +36,6 @@ export default function EventPage() {
     if (!token) return
     loadEvent()
   }, [id, token])
-
-  async function handleGenerateSummary() {
-    setSummaryError("")
-    setGeneratingSummary(true)
-    try {
-      const result = await generateSummary(id)
-      setSummary(result.text)
-    } catch (err) {
-      setSummaryError(err instanceof Error ? err.message : "生成に失敗しました")
-    } finally {
-      setGeneratingSummary(false)
-    }
-  }
 
   async function handleDelete() {
     if (!confirm("このイベントを削除しますか？")) return
@@ -123,22 +107,6 @@ export default function EventPage() {
         <button onClick={handleDelete} style={{ flex: 1, border: "1px solid rgba(239,68,68,0.2)", background: "none", color: "var(--danger)", borderRadius: "8px", padding: "0.6rem", fontSize: "0.82rem", fontWeight: 600, cursor: "pointer" }}>
           削除
         </button>
-      </div>
-
-      <div style={{ display: "flex", flexDirection: "column", gap: "0.5rem" }}>
-        <button
-          onClick={handleGenerateSummary}
-          disabled={generatingSummary}
-          style={{ background: "none", border: "1px solid var(--border)", borderRadius: "8px", padding: "0.6rem", fontWeight: 600, fontSize: "0.82rem", color: generatingSummary ? "var(--muted)" : "var(--text)", cursor: generatingSummary ? "not-allowed" : "pointer", transition: "all 0.15s" }}
-        >
-          {generatingSummary ? "生成中…" : "✨ 出欠サマリーを生成する"}
-        </button>
-        {summaryError && <p style={{ color: "var(--danger)", fontSize: "0.82rem" }}>{summaryError}</p>}
-        {summary && (
-          <div style={{ background: "var(--card)", border: "1px solid var(--border)", borderRadius: "10px", padding: "1rem", fontSize: "0.88rem", color: "var(--text-dim)", lineHeight: 1.7, whiteSpace: "pre-wrap" }}>
-            {summary}
-          </div>
-        )}
       </div>
 
       <AttendanceForm eventId={id} onSubmitted={handleAttended} />
