@@ -85,7 +85,7 @@ export default function NewEventPage() {
           disabled={generating || !title.trim()}
           style={{ background: "none", border: "1px solid var(--border)", borderRadius: "10px", padding: "0.75rem", fontWeight: 600, fontSize: "0.9rem", color: generating || !title.trim() ? "var(--muted)" : "var(--text)", cursor: generating || !title.trim() ? "not-allowed" : "pointer", transition: "all 0.15s" }}
         >
-          {generating ? "生成中…" : "✨ LINE用告知文を生成する"}
+          {generating ? "生成中…" : "✨ LINE用告知文をAIで生成する"}
         </button>
         {genError && <p style={{ color: "var(--danger)", fontSize: "0.85rem" }}>{genError}</p>}
         {announcement && (

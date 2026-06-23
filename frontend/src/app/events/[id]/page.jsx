@@ -140,7 +140,7 @@ export default function EventPage() {
           disabled={generating}
           style={{ background: "none", border: "1px solid var(--border)", borderRadius: "8px", padding: "0.6rem", fontWeight: 600, fontSize: "0.82rem", color: generating ? "var(--muted)" : "var(--text)", cursor: generating ? "not-allowed" : "pointer", transition: "all 0.15s" }}
         >
-          {generating ? "生成中…" : "✨ LINE用告知文を生成する"}
+          {generating ? "生成中…" : "✨ LINE用告知文をAIで生成する"}
         </button>
         {genError && <p style={{ color: "var(--danger)", fontSize: "0.82rem" }}>{genError}</p>}
         {announcement && (
